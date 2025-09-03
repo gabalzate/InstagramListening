@@ -50,6 +50,19 @@ def get_posts_data(username):
         print(f"  ❌ Error de API para los posts de {username}: {e}")
         return []
 
+def load_existing_timestamps(filename):
+    """Carga las marcas de tiempo de creación de posts existentes del archivo CSV."""
+    existing_timestamps = set()
+    if os.path.exists(filename):
+        with open(filename, 'r', newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            next(reader, None)  # Saltar el encabezado
+            for row in reader:
+                # La marca de tiempo está en la columna 'post_created_at_str', índice 6
+                if len(row) > 6 and row[6] not in ('N/A', ''):
+                    existing_timestamps.add(row[6])
+    return existing_timestamps
+
 def save_data_to_csv(data_rows, filename, header):
     """Guarda o añade datos a un archivo CSV."""
     file_exists = os.path.exists(filename)
@@ -75,6 +88,9 @@ def main():
     all_data_to_save = []
     current_timestamp_registro = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
+    # Cargar las marcas de tiempo de posts existentes
+    existing_timestamps = load_existing_timestamps(OUTPUT_CSV_FILE)
+
     for username in perfiles:
         print(f"\n--- ⏳ Procesando perfil: {username} ---")
 
@@ -96,31 +112,40 @@ def main():
             all_data_to_save.append(row)
             continue
 
-        # Para cada post, crear una fila de datos completa
+        # Para cada post, crear una fila de datos si no existe una con el mismo timestamp
         for post in posts:
-            post_id = post.get('pk')
-            shortcode = post.get('code')
-            post_url = f"https://www.instagram.com/p/{shortcode}/"
-            likes = post.get('like_count', 0)
-            comments = post.get('comment_count', 0)
-            caption = post.get('caption', {}).get('text', '')
-
-            # Convierte el timestamp de Unix a un formato de fecha y hora estándar
             post_created_at_unix = post.get('taken_at')
             if post_created_at_unix:
                 post_created_at_str = datetime.fromtimestamp(post_created_at_unix).strftime('%Y-%m-%d %H:%M:%S')
             else:
                 post_created_at_str = 'N/A'
 
-            # Se añade 'N/A' como valor inicial para la transcripción, sin llamar a la API
-            row = [
-                current_timestamp_registro, username,
-                profile.get('edge_followed_by', {}).get('count', 0),
-                profile.get('edge_owner_to_timeline_media', {}).get('count', 0),
-                profile.get('edge_follow', {}).get('count', 0),
-                post_id, post_created_at_str, shortcode, post_url, likes, comments, caption, 'N/A'
-            ]
-            all_data_to_save.append(row)
+            # Verificar si la marca de tiempo ya existe en nuestra base de datos
+            if post_created_at_str not in existing_timestamps:
+                post_id = post.get('pk')
+                shortcode = post.get('code')
+                post_url = f"https://www.instagram.com/p/{shortcode}/"
+                likes = post.get('like_count', 0)
+                comments = post.get('comment_count', 0)
+
+                # Solución para el AttributeError: verificar si 'caption' no es None antes de llamar a '.get()'
+                caption_obj = post.get('caption')
+                if caption_obj is not None:
+                    caption = caption_obj.get('text', '')
+                else:
+                    caption = '' # Asignar un valor predeterminado si no hay descripción
+
+                # Se añade 'N/A' para la transcripción, sin llamar a la API
+                row = [
+                    current_timestamp_registro, username,
+                    profile.get('edge_followed_by', {}).get('count', 0),
+                    profile.get('edge_owner_to_timeline_media', {}).get('count', 0),
+                    profile.get('edge_follow', {}).get('count', 0),
+                    post_id, post_created_at_str, shortcode, post_url, likes, comments, caption, 'N/A'
+                ]
+                all_data_to_save.append(row)
+            else:
+                print(f"  > Post con fecha de creación '{post_created_at_str}' ya existe. Saltando para evitar duplicados.")
 
     # Encabezado del CSV consolidado
     header = [
