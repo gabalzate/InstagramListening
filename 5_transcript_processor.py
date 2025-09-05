@@ -18,7 +18,7 @@ HEADERS = {
     "accept": "application/json"
 }
 
-BATCH_SIZE =10  # Guardar el progreso cada 100 posts
+BATCH_SIZE =10  # Guardar el progreso cada 10 posts
 
 def get_transcript(post_url):
     """Realiza una llamada a la API para obtener la transcripción de un post."""
@@ -75,7 +75,7 @@ def process_transcripts():
             transcriptions_processed_count += 1
             
             # Pausa para evitar saturar la API
-            time.sleep(15)
+            time.sleep(3)
 
             # Guardar el progreso cada BATCH_SIZE
             if transcriptions_processed_count % BATCH_SIZE == 0:
