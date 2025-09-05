@@ -18,3 +18,10 @@ Se crea un archivo llamado perfiles_instagram.csv en donde en cada línea se inc
   + Lo que hace es leer los nombres de los perfiles de instagram, obtener los datos del perfil, luego obtener los posts y su información asociada para luego crear una tabla en csv con esa información.
 + 5_transcript_processor.py
   + Lo que hace es leer la última columna del archivo 4_main.... que corresponde a la transcripción del archivo, mira cuales tienen N/A y si tienen a través de leer su url hace la transcripción y la guarda en un archivo temporal.  Luego de que termina de guardarlas todas incorpora esto en la columna correspondiente.
+  
+## Tercera actualización
+
+Cree un archivo para descargar los post hasta cierta cantidad de tiempo.
+
++ 6_6_historical_data_collector.py
+    + Lo que hace es pedir un nombre de usuario y descargar a un archivo los post realizados por esa cuenta en los últimos X días.
