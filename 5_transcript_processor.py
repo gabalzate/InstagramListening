@@ -75,7 +75,7 @@ def process_transcripts():
             transcriptions_processed_count += 1
             
             # Pausa para evitar saturar la API
-            time.sleep(3)
+            time.sleep(5)
 
             # Guardar el progreso cada BATCH_SIZE
             if transcriptions_processed_count % BATCH_SIZE == 0:
