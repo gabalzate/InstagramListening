@@ -84,30 +84,30 @@ def main():
     if not perfiles:
         print(f"Error: El archivo {PERFILES_FILE} está vacío. Añade nombres de usuario para continuar.")
         return
-
+    
     all_data_to_save = []
     current_timestamp_registro = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
+    
     # Cargar las marcas de tiempo de posts existentes
     existing_timestamps = load_existing_timestamps(OUTPUT_CSV_FILE)
-
+    
     for username in perfiles:
         print(f"\n--- ⏳ Procesando perfil: {username} ---")
 
         profile = get_profile_data(username)
         posts = get_posts_data(username)
-
+        
         # Pausa para evitar saturar la API
         time.sleep(5)
 
         # Si no hay posts, registrar solo la información del perfil
         if not posts:
             row = [
-                current_timestamp_registro, username,
+                current_timestamp_registro, username, 
                 profile.get('edge_followed_by', {}).get('count', 0),
                 profile.get('edge_owner_to_timeline_media', {}).get('count', 0),
                 profile.get('edge_follow', {}).get('count', 0),
-                'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A'
+                'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A'
             ]
             all_data_to_save.append(row)
             continue
@@ -127,21 +127,25 @@ def main():
                 post_url = f"https://www.instagram.com/p/{shortcode}/"
                 likes = post.get('like_count', 0)
                 comments = post.get('comment_count', 0)
-
-                # Solución para el AttributeError: verificar si 'caption' no es None antes de llamar a '.get()'
+                
                 caption_obj = post.get('caption')
-                if caption_obj is not None:
-                    caption = caption_obj.get('text', '')
-                else:
-                    caption = '' # Asignar un valor predeterminado si no hay descripción
+                caption = caption_obj.get('text', '') if caption_obj is not None else ''
 
+                media_type = post.get('media_type', 'N/A')
+                play_count = post.get('play_count', 'N/A')
+                
+                # Extraer los nombres de usuario etiquetados
+                usertags_list = post.get('usertags', {}).get('in', [])
+                usertags = ','.join([user.get('user', {}).get('username', '') for user in usertags_list]) if usertags_list else 'N/A'
+                
                 # Se añade 'N/A' para la transcripción, sin llamar a la API
                 row = [
                     current_timestamp_registro, username,
                     profile.get('edge_followed_by', {}).get('count', 0),
                     profile.get('edge_owner_to_timeline_media', {}).get('count', 0),
                     profile.get('edge_follow', {}).get('count', 0),
-                    post_id, post_created_at_str, shortcode, post_url, likes, comments, caption, 'N/A'
+                    post_id, post_created_at_str, shortcode, post_url, likes, comments, caption, 
+                    media_type, play_count, usertags, 'N/A'
                 ]
                 all_data_to_save.append(row)
             else:
@@ -149,11 +153,11 @@ def main():
 
     # Encabezado del CSV consolidado
     header = [
-        'timestamp_registro', 'username', 'followers_count', 'posts_count_total',
-        'following_count', 'post_id', 'post_created_at_str', 'post_shortcode', 'post_url',
-        'likes_count', 'comments_count', 'post_caption', 'post_transcript'
+        'timestamp_registro', 'username', 'followers_count', 'posts_count_total', 
+        'following_count', 'post_id', 'post_created_at_str', 'post_shortcode', 'post_url', 
+        'likes_count', 'comments_count', 'post_caption', 'media_type', 'play_count', 'usertags', 'post_transcript'
     ]
-
+    
     save_data_to_csv(all_data_to_save, OUTPUT_CSV_FILE, header)
     print("\n🎉 Proceso de recolección diaria completado. Todos los datos han sido guardados en 'base_de_datos_instagram.csv'.")
     print("El campo 'post_transcript' ha sido dejado como 'N/A' para ser llenado por el script semanal.")

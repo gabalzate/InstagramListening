@@ -8,7 +8,7 @@ from config import SCRAPE_API_KEY
 
 # Rutas a los archivos
 INPUT_CSV_FILE = "base_de_datos_instagram.csv"
-OUTPUT_CSV_FILE = "base_de_datos_instagram_temp.csv"
+OUTPUT_CSV_FILE_TEMP = "base_de_datos_instagram_temp.csv"
 
 # Endpoint de la API
 BASE_URL_TRANSCRIPT = "https://api.scrapecreators.com/v2/instagram/media/transcript"
@@ -18,62 +18,91 @@ HEADERS = {
     "accept": "application/json"
 }
 
+BATCH_SIZE =10  # Guardar el progreso cada 100 posts
+
 def get_transcript(post_url):
     """Realiza una llamada a la API para obtener la transcripción de un post."""
     params = {"url": post_url}
     try:
         response = requests.get(BASE_URL_TRANSCRIPT, headers=HEADERS, params=params)
         response.raise_for_status()
-        transcripts = response.json().get('transcripts', [])
-        if transcripts and 'text' in transcripts[0]:
+        data = response.json()
+        
+        transcripts = data.get('transcripts')
+        if transcripts and isinstance(transcripts, list) and len(transcripts) > 0 and 'text' in transcripts[0]:
             return transcripts[0]['text']
         else:
             return "No se encontró transcripción."
+            
     except requests.exceptions.RequestException as e:
         print(f"  ❌ Error en la API de transcripción para {post_url}: {e}")
         return "Error en la transcripción."
+    except ValueError:
+        print("  ❌ Error al decodificar la respuesta JSON.")
+        return "Error al decodificar JSON."
 
 def process_transcripts():
     """
-    Lee el archivo CSV, procesa las transcripciones pendientes y
-    guarda el resultado en un nuevo archivo CSV.
+    Lee el archivo CSV, procesa las transcripciones pendientes en lotes y
+    guarda el resultado.
     """
     if not os.path.exists(INPUT_CSV_FILE):
         print(f"❌ Error: No se encontró el archivo {INPUT_CSV_FILE}.")
         return
 
-    updated_rows = []
-    transcriptions_to_process = 0
+    rows_to_process = []
+    header = []
 
     with open(INPUT_CSV_FILE, 'r', newline='', encoding='utf-8') as f_in:
         reader = csv.reader(f_in)
         header = next(reader)
-        updated_rows.append(header)
-
         for row in reader:
-            # La columna de transcripción está en el último índice de tu encabezado
-            if len(row) > 12 and row[12] == 'N/A':
-                transcriptions_to_process += 1
-                post_url = row[8] # La URL está en el índice 8
-                print(f"🔎 Transcribiendo post pendiente para {row[1]} ({row[7]})...")
-                transcript = get_transcript(post_url)
-                row[12] = transcript
-                print(f"  ✅ Transcripción obtenida. Pausando 15 segundos...")
-                time.sleep(15) # Pausa entre llamadas a la API de transcripción
+            rows_to_process.append(row)
+    
+    transcriptions_processed_count = 0
+    total_rows = len(rows_to_process)
+    
+    print(f"Total de filas para procesar: {total_rows}")
+    
+    for i, row in enumerate(rows_to_process):
+        # La columna de transcripción está en el índice 15
+        if len(row) > 15 and row[15] == 'N/A':
+            post_url = row[8] # La URL está en el índice 8
+            print(f"🔎 Procesando post {i+1}/{total_rows} - {row[1]} ({row[7]})...")
+            
+            transcript = get_transcript(post_url)
+            row[15] = transcript
+            transcriptions_processed_count += 1
+            
+            # Pausa para evitar saturar la API
+            time.sleep(15)
 
-            updated_rows.append(row)
+            # Guardar el progreso cada BATCH_SIZE
+            if transcriptions_processed_count % BATCH_SIZE == 0:
+                print(f"\n✅ Lote de {BATCH_SIZE} posts completado. Guardando progreso...")
+                
+                with open(OUTPUT_CSV_FILE_TEMP, 'w', newline='', encoding='utf-8') as f_out:
+                    writer = csv.writer(f_out)
+                    writer.writerow(header)
+                    writer.writerows(rows_to_process)
+                
+                os.replace(OUTPUT_CSV_FILE_TEMP, INPUT_CSV_FILE)
+                print(f"🎉 Progreso guardado. El archivo '{INPUT_CSV_FILE}' ha sido actualizado.")
 
-    if transcriptions_to_process == 0:
+    # Guardar el último lote si no se ha guardado ya
+    if transcriptions_processed_count > 0 and (transcriptions_processed_count % BATCH_SIZE != 0 or total_rows < BATCH_SIZE):
+        print("\n✅ Último lote completado. Guardando progreso final...")
+        with open(OUTPUT_CSV_FILE_TEMP, 'w', newline='', encoding='utf-8') as f_out:
+            writer = csv.writer(f_out)
+            writer.writerow(header)
+            writer.writerows(rows_to_process)
+        
+        os.replace(OUTPUT_CSV_FILE_TEMP, INPUT_CSV_FILE)
+        
+    if transcriptions_processed_count == 0:
         print("\n✅ No se encontraron transcripciones pendientes. ¡Todo está actualizado!")
-        return
-
-    with open(OUTPUT_CSV_FILE, 'w', newline='', encoding='utf-8') as f_out:
-        writer = csv.writer(f_out)
-        writer.writerows(updated_rows)
-
-    # Reemplazar el archivo original con el nuevo
-    os.replace(OUTPUT_CSV_FILE, INPUT_CSV_FILE)
-    print(f"\n🎉 Proceso de transcripción completado. Se actualizaron {transcriptions_to_process} posts y el archivo '{INPUT_CSV_FILE}' se ha renovado.")
+    else:
+        print(f"\n🎉 Proceso de transcripción completado. Se actualizaron {transcriptions_processed_count} posts y el archivo '{INPUT_CSV_FILE}' se ha renovado.")
 
 if __name__ == "__main__":
     process_transcripts()
