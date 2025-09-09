@@ -16,7 +16,9 @@ Espero sea de interés.  Cualquier duda o aclaración de uso se puede a través 
 
 
 
-Instagram Listening usa la API de scrapecreators para llamar diversos datos de perfiles de cuentas de instagram como Nombre, perfil, post y hacer una transcripción de lso mismos.
+Instagram Listening usa la API de scrapecreators para llamar diversos datos de perfiles de cuentas de instagram como Nombre, perfil, post y hacer una transcripción de los mismos.
+
+El archivo 1, 2 y 3 funcionan para conseguir la información de un perfil en particular.  A partir del archivo 4 los procesos se ejecutan a los perfiles contenidos en el archivo perfiles_instragram.txt.
 
 Los archivos en orden de jerarquía se han creado de la siguiente manera:
 
