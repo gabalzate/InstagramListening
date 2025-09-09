@@ -102,7 +102,7 @@ def process_transcriptions():
         
         is_video = row[media_type_index].strip() == '2'
         current_transcript = row[transcript_index]
-        needs_processing = not current_transcript or current_transcript.strip() in ["N/A", "No se encontró transcripción.", ""]
+        needs_processing = not current_transcript or current_transcript.strip() in ["N/A"]
 
         # Solo procesar si es un video Y necesita transcripción
         if is_video and needs_processing:
