@@ -13,7 +13,7 @@ OUTPUT_HTML_FILE = "mapa_de_red_final.html"
 # --- Parámetros de Visualización ---
 MIN_WEIGHT_THRESHOLD = 50.0
 VISUAL_EDGE_MIN = 1
-VISUAL_EDGE_MAX = 10
+VISUAL_EDGE_MAX = 9
 VISUAL_NODE_MIN = 10
 VISUAL_NODE_MAX = 50
 
