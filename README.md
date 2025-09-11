@@ -73,7 +73,7 @@ Cree un script para hacer análisis de redes de las interacciones de los perfile
 Desarrollé un script para analizar el discurso utilizado por los diferentes perfiles.
 
 + 11_discourse_and_relevance_analyzer.py
-  + Lo que hace es extraer el texto de los post y transcription de los perfiles, crear un análisis básico del mismo, crear una nube de palabras y extraer el texto completamente de cada perfil.
+  + Lo que hace es extraer el texto de los post y transcription de los perfiles, crear un análisis básico del mismo, crear una nube de palabras y extraer el texto completamente de cada perfil. También genera comparativos de eficiencia del discurso a nivel general.
 
 Hecho por Gabriel Alzate
 
