@@ -38,7 +38,7 @@ Se crea un archivo llamado perfiles_instagram.csv en donde en cada línea se inc
   + Lo que hace es leer los nombres de los perfiles de instagram, obtener los datos del perfil, luego obtener los posts y su información asociada para luego crear una tabla en csv con esa información.
 + 5_transcript_processor.py
   + Lo que hace es leer la última columna del archivo 4_main.... que corresponde a la transcripción del archivo, mira cuales tienen N/A y si tienen a través de leer su url hace la transcripción y la guarda en un archivo temporal.  Luego de que termina de guardarlas todas incorpora esto en la columna correspondiente.
-  
+
 ## Tercera actualización
 
 Cree un archivo para descargar los post hasta cierta cantidad de tiempo.
@@ -57,6 +57,23 @@ Cree archivo para realizar análisis de los 10 primeros videos, imagenes, carrus
     + site: instagram.com "@perfil" -inurl:"https://www.instagram.com/perfil/" after:YYYY-MM-DD
 
 
+
+## Quinta actualización
+
+Cree un script para hacer análisis de redes de las interacciones de los perfiles.
+
++ 9_network_graph_generator.py
+  + Lo que hace es analizar las referencias a los perfiles analizados entre ellos y luego relacionados a los resultados del mention finder para crear tablas de relacion que puedan ser usadas por cualquier programa o libreria dedicada a crear mapas de redes.
+
++ 10_network_graph_final.py
+  + Lo que hace es crear una visualización de red y crear un mapa de clusterización por medio del método Leiden.
+
+## Sexta actualización
+
+Desarrollé un script para analizar el discurso utilizado por los diferentes perfiles.
+
++ 11_discourse_and_relevance_analyzer.py
+  + Lo que hace es extraer el texto de los post y transcription de los perfiles, crear un análisis básico del mismo, crear una nube de palabras y extraer el texto completamente de cada perfil.
 
 Hecho por Gabriel Alzate
 

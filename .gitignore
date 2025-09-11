@@ -2,4 +2,4 @@ config.py
 *.csv
 /lib
 *.json
-
+*.txt
