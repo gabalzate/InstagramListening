@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Candidatos en Instagram</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0056b3; text-align: center; }
+        p.date-info { text-align: center; font-style: italic; color: #666; }
+        .button-link { display: inline-block; padding: 10px 20px; margin: 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .button-link.network { background-color: #28a745; }
+        .charts { text-align: center; }
+        .charts img { max-width: 90%; margin: 20px 0; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .summary-table th { background-color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Análisis General de Candidatos en Instagram</h1>
+
+        <p class="date-info">
+            <!-- Análisis basado en datos recopilados desde el {{ fecha_inicio_datos }} -->
+            Análisis basado en datos recopilados en Agosto y Septiembre 2025
+        </p>
+        <div style="text-align: center;">
+            <a href="../mapa_de_red_final.html" class="button-link network">Ver Mapa de Red Interactivo</a>
+        </div>
+
+        <h2>Gráficos Comparativos de Rendimiento General</h2>
+        <div class="charts">
+            <img src="../reportes_discurso/comparativo_interacciones_totales_videos.png" alt="Gráfico de Interacciones Totales">
+            <img src="../reportes_discurso/comparativo_alcance_videos.png" alt="Gráfico de Alcance de Videos">
+            <img src="../reportes_discurso/comparativo_eficiencia_videos.png" alt="Gráfico de Eficiencia de Videos">
+        </div>
+
+        <h2>Resumen de Engagement por Tipo de Contenido</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>Candidato</th>
+                    <th>Seguidores</th>
+                    <th>Avg. Engagement Video (Likes)</th>
+                    <th>Avg. Engagement Video (Comentarios)</th>
+                    <th>Avg. Engagement Imagen (Likes)</th>
+                    <th>Avg. Engagement Imagen (Comentarios)</th>
+                    <th>Avg. Engagement Carrusel (Likes)</th>
+                    <th>Avg. Engagement Carrusel (Comentarios)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for candidate in summary_data %}
+                <tr>
+                    <td>{{ candidate.name }}</td>
+                    <td>{{ candidate.followers }}</td>
+                    <td>{{ candidate.avg_video_likes }}</td>
+                    <td>{{ candidate.avg_video_comments }}</td>
+                    <td>{{ candidate.avg_image_likes }}</td>
+                    <td>{{ candidate.avg_image_comments }}</td>
+                    <td>{{ candidate.avg_carousel_likes }}</td>
+                    <td>{{ candidate.avg_carousel_comments }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Análisis Individual Detallado</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Candidato</th>
+                    <th>Reporte Detallado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for candidate in candidates %}
+                <tr>
+                    <td>{{ candidate.name }}</td>
+                    <td><a href="{{ candidate.report_url }}" class="button-link">Ver Análisis</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
