@@ -3,4 +3,3 @@ config.py
 /lib
 *.json
 *.txt
-*.png
