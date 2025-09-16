@@ -1,12 +1,12 @@
 <html>
     <head>
         <meta charset="utf-8">
-        
+
             <script src="lib/bindings/utils.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            
-        
+
+
 <center>
 <h1></h1>
 </center>
@@ -40,24 +40,24 @@
                  float: left;
              }
 
-             
 
-             
 
-             
+
+
+
         </style>
     </head>
 
 
     <body>
         <div class="card" style="width: 100%">
-            
-            
+
+
             <div id="mynetwork" class="card-body"></div>
         </div>
 
-        
-        
+
+
 
         <script type="text/javascript">
 
@@ -77,15 +77,15 @@
                   value : []
               };
 
-              
 
-              
+
+
 
               // This method is responsible for drawing the graph, returns the drawn network
               function drawGraph() {
                   var container = document.getElementById('mynetwork');
 
-                  
+
 
                   // parsing and collecting nodes and edges from the python
                   nodes = new vis.DataSet([{"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "burbujapolitica", "label": "burbujapolitica", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: burbujapolitica\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "juangzuluaga", "label": "juangzuluaga", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: juangzuluaga\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "radiounobogota", "label": "radiounobogota", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: radiounobogota\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Maria Jos\u00e9 Pizarro", "label": "Maria Jos\u00e9 Pizarro", "mass": 1.1401264228796675, "shape": "dot", "size": 11.401264228796675, "title": "Perfil: pizarromariajo\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 2660.70\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "nicolasdefrancisco", "label": "nicolasdefrancisco", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: nicolasdefrancisco\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Maria Fernanda Cabal", "label": "Maria Fernanda Cabal", "mass": 4.619776457557144, "shape": "dot", "size": 46.19776457557144, "title": "Perfil: mariafernandacabal\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 41104.70\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Vicky D\u00e1vila", "label": "Vicky D\u00e1vila", "mass": 4.622387733790118, "shape": "dot", "size": 46.223877337901186, "title": "Perfil: vickydavilah\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 41133.55\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "mauriciogomezco", "label": "mauriciogomezco", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: mauriciogomezco\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Enrique Pe\u00f1alosa", "label": "Enrique Pe\u00f1alosa", "mass": 4.050862185031775, "shape": "dot", "size": 40.50862185031775, "title": "Perfil: enriquepenalosal\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 34819.20\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Juan Daniel Oviedo", "label": "Juan Daniel Oviedo", "mass": 3.8859671056129996, "shape": "dot", "size": 38.85967105613, "title": "Perfil: jdoviedoar\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 32997.40\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "noticias_delcaribe", "label": "noticias_delcaribe", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: noticias_delcaribe\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "juliosanchezcristo", "label": "juliosanchezcristo", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: juliosanchezcristo\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "jdcastellanoso", "label": "jdcastellanoso", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: jdcastellanoso\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "susana.muhamad", "label": "susana.muhamad", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: susana.muhamad\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Juan Carlos Pinz\u00f3n", "label": "Juan Carlos Pinz\u00f3n", "mass": 3.8621533525143716, "shape": "dot", "size": 38.62153352514372, "title": "Perfil: pinzonbueno\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 32734.30\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "peretantico", "label": "peretantico", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: peretantico\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Santiago Botero", "label": "Santiago Botero", "mass": 1.013812157821553, "shape": "dot", "size": 10.13812157821553, "title": "Perfil: santiagobotero.jaramillo\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 1265.15\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Abelardo de la Espriella", "label": "Abelardo de la Espriella", "mass": 5.0, "shape": "dot", "size": 50.0, "title": "Perfil: delaespriella_style\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 45305.50\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Gustavo Bolivar - gustavo_bolivar", "label": "Gustavo Bolivar - gustavo_bolivar", "mass": 1.6477005947781265, "shape": "dot", "size": 16.477005947781265, "title": "Perfil: gustavo_bolivar\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 8268.50\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Gustavo Bolivar - gustavobolivarsenador", "label": "Gustavo Bolivar - gustavobolivarsenador", "mass": 1.0174235935822344, "shape": "dot", "size": 10.174235935822344, "title": "Perfil: gustavobolivarsenador\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 1305.05\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Carolina Corcho", "label": "Carolina Corcho", "mass": 1.0, "shape": "dot", "size": 10.0, "title": "Perfil: carolinacorcho\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 1112.55\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "miguelpolopolo", "label": "miguelpolopolo", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: miguelpolopolo\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Ivan Cepeda", "label": "Ivan Cepeda", "mass": 1.4562537689835142, "shape": "dot", "size": 14.562537689835143, "title": "Perfil: ivancepedacastr\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 6153.35\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "juanduquega", "label": "juanduquega", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: juanduquega\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "David Luna", "label": "David Luna", "mass": 1.4618564725821652, "shape": "dot", "size": 14.618564725821653, "title": "Perfil: davidlunas\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 6215.25\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "proclamadelpacifico", "label": "proclamadelpacifico", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: proclamadelpacifico\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Daniel Quintero", "label": "Daniel Quintero", "mass": 1.7000030547858878, "shape": "dot", "size": 17.000030547858877, "title": "Perfil: quinterocalle\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 8846.35\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "munir.kadamani", "label": "munir.kadamani", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: munir.kadamani\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "cwmasnoticias", "label": "cwmasnoticias", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: cwmasnoticias\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "revistapodercol", "label": "revistapodercol", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: revistapodercol\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "juanbaenam", "label": "juanbaenam", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: juanbaenam\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "en_el_ruedo_", "label": "en_el_ruedo_", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: en_el_ruedo_\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "andicolombiaoficial", "label": "andicolombiaoficial", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: andicolombiaoficial\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "carlosgfajardo", "label": "carlosgfajardo", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: carlosgfajardo\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Sergio Fajardo", "label": "Sergio Fajardo", "mass": 4.006479540288666, "shape": "dot", "size": 40.06479540288666, "title": "Perfil: sergiofajardovalderrama\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 34328.85\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "casaheilbron", "label": "casaheilbron", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: casaheilbron\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(120.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(120.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "grandes_ricos_famosos", "label": "grandes_ricos_famosos", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: grandes_ricos_famosos\u003cbr\u003eComunidad: 1\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "pipecordobal", "label": "pipecordobal", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: pipecordobal\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "portaldeopinion", "label": "portaldeopinion", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: portaldeopinion\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "desigualcol", "label": "desigualcol", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: desigualcol\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Germ\u00e1n Vargas Lleras", "label": "Germ\u00e1n Vargas Lleras", "mass": 3.9454879115334007, "shape": "dot", "size": 39.45487911533401, "title": "Perfil: germanvargaslleras\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 33655.00\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Claudia Lopez", "label": "Claudia Lopez", "mass": 1.1876905705548055, "shape": "dot", "size": 11.876905705548056, "title": "Perfil: claudialopezcl\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 3186.20\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(240.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(240.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "Juan Manuel Galan", "label": "Juan Manuel Galan", "mass": 3.9220995656547033, "shape": "dot", "size": 39.22099565654703, "title": "Perfil: juanmanuelgalanpachon\u003cbr\u003eComunidad: 2\u003cbr\u003e\u003cb\u003eRelevancia Real: 33396.60\u003c/b\u003e"}, {"borderWidth": 2, "color": {"background": "hsl(0.0, 70%, 50%)", "border": "#000000", "highlight": {"background": "hsl(0.0, 70%, 50%)", "border": "#FFFFFF"}}, "font": {"color": "white"}, "id": "elpatrulleroefra", "label": "elpatrulleroefra", "mass": 1.0, "shape": "dot", "size": 10, "title": "Perfil: elpatrulleroefra\u003cbr\u003eComunidad: 0\u003cbr\u003e\u003cb\u003eRelevancia Real: 0.00\u003c/b\u003e"}]);
@@ -102,21 +102,21 @@
 
                   var options = {"configure": {"enabled": true, "filter": "physics"}, "interaction": {"hover": true, "highlightNearest": {"enabled": true, "degree": 1, "hover": false}, "keyboard": {"enabled": true}}};
 
-                  
 
 
-                  
+
+
 
                   network = new vis.Network(container, data, options);
 
-                  
-
-                  
-
-                  
 
 
-                  
+
+
+
+
+
+
 
                   return network;
 
@@ -124,4 +124,26 @@
               drawGraph();
         </script>
     </body>
+    <style>
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        padding: 10px 20px;
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        font-family: sans-serif;
+        font-weight: bold;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transition: background-color 0.3s;
+        }
+      .back-button:hover {
+        background-color: #5a6268;
+      }
+    </style>
+
+  <a href="./index.html" class="back-button">← Volver al Reporte General</a>
 </html>
