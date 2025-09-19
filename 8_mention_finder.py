@@ -35,7 +35,7 @@ def search_google_for_mentions(username):
     one_month_ago = datetime.now() - timedelta(days=30)
     date_str = one_month_ago.strftime("%Y-%m-%d")
 
-    query = f'site:instagram.com "@{username}" -inurl:"https://www.instagram.com/{username}/" after:{date_str}'
+    query = f'site:instagram.com/reel/ "@{username}" -inurl:https://www.instagram.com/{username}/ after:{date_str}'
     params = {"query": query, "region": "CO"}
 
     try:
