@@ -19,7 +19,7 @@ HEADERS = {
     "accept": "application/json"
 }
 
-BATCH_SIZE = 10  # Guardar el progreso cada 10 posts
+BATCH_SIZE = 5  # Guardar el progreso cada 5 posts
 
 def limpiar_transcripcion_srt(texto_srt: str) -> str:
     """
@@ -49,6 +49,11 @@ def get_transcript(post_url):
         
         # Itera sobre TODOS los items en la lista de transcripciones (para manejar carruseles)
         for item in data.get('transcripts', []):
+            # --- ✅ CORRECCIÓN AÑADIDA AQUÍ ---
+            # Si el item es None (porque era una imagen en un carrusel, por ejemplo), sáltalo.
+            if item is None:
+                continue
+
             if 'text' in item and item['text']:
                 found_transcripts.append(item['text'])
             elif 'transcript' in item and item['transcript']:
@@ -77,6 +82,7 @@ def process_transcriptions():
         return
 
     rows_to_process = []
+    header = []
     with open(INPUT_CSV_FILE, 'r', newline='', encoding='utf-8') as f_in:
         reader = csv.reader(f_in)
         header = next(reader)
@@ -85,12 +91,12 @@ def process_transcriptions():
             print("Error: El CSV debe contener las columnas 'post_url', 'post_transcript' y 'media_type'.")
             return
         
-        url_index = header.index('post_url')
-        transcript_index = header.index('post_transcript')
-        media_type_index = header.index('media_type') # <-- Obtenemos el índice de media_type
-
         for row in reader:
             rows_to_process.append(row)
+
+    url_index = header.index('post_url')
+    transcript_index = header.index('post_transcript')
+    media_type_index = header.index('media_type') # <-- Obtenemos el índice de media_type
 
     transcriptions_processed_count = 0
     total_rows = len(rows_to_process)

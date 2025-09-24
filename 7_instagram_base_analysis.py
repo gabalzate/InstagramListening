@@ -4,8 +4,8 @@ import numpy as np
 
 def analyze_instagram_data(input_filepath='base_de_datos_instagram.csv', output_folder='output'):
     """
-    Realiza un análisis completo de los datos de Instagram, calcula métricas de engagement
-    y genera varios archivos CSV con los resultados.
+    Realiza un análisis completo de los datos de Instagram, calcula métricas de engagement,
+    genera un resumen por candidato y extrae las 10 publicaciones más relevantes POR PERFIL.
 
     Args:
         input_filepath (str): La ruta al archivo CSV de entrada.
@@ -31,91 +31,105 @@ def analyze_instagram_data(input_filepath='base_de_datos_instagram.csv', output_
     df['post_created_at_str'] = pd.to_datetime(df['post_created_at_str'])
     numeric_cols = ['followers_count', 'likes_count', 'comments_count', 'play_count']
     for col in numeric_cols:
-        df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
+        df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # Asignar seguidores actualizados a cada publicación
-    df_sorted = df.sort_values('timestamp_registro', ascending=True)
-    latest_followers = df_sorted.drop_duplicates('username', keep='last')[['username', 'followers_count']]
-    latest_followers = latest_followers.rename(columns={'followers_count': 'seguidores_actualizados'})
-    df = pd.merge(df, latest_followers, on='username', how='left')
-    print("Datos cargados y seguidores actualizados asignados.")
+    # Reemplazar followers_count igual a 0 con NaN para evitar divisiones por cero
+    df['followers_count'] = df['followers_count'].replace(0, np.nan)
+    print(" -> Datos cargados y limpios.")
 
-    # --- PASO 2: Cálculo de Métricas de Engagement Específicas ---
+    # --- PASO 2: Cálculo de Métricas de Engagement ---
     print("Paso 2: Calculando métricas de engagement...")
+    
+    df['engagement_likes'] = (df['likes_count'] / df['followers_count']) * 100
+    df['engagement_comments'] = (df['comments_count'] / df['followers_count']) * 100
 
-    # Evitar división por cero
-    df['engagement_video_likes'] = np.where((df['media_type'] == 2) & (df['play_count'] > 0), df['likes_count'] / df['play_count'], 0)
-    df['engagement_video_comments'] = np.where((df['media_type'] == 2) & (df['play_count'] > 0), df['comments_count'] / df['play_count'], 0)
-    df['engagement_imagen_likes'] = np.where((df['media_type'] == 1) & (df['seguidores_actualizados'] > 0), df['likes_count'] / df['seguidores_actualizados'], 0)
-    df['engagement_imagen_comments'] = np.where((df['media_type'] == 1) & (df['seguidores_actualizados'] > 0), df['comments_count'] / df['seguidores_actualizados'], 0)
-    df['engagement_carrusel_likes'] = np.where((df['media_type'] == 8) & (df['seguidores_actualizados'] > 0), df['likes_count'] / df['seguidores_actualizados'], 0)
-    df['engagement_carrusel_comments'] = np.where((df['media_type'] == 8) & (df['seguidores_actualizados'] > 0), df['comments_count'] / df['seguidores_actualizados'], 0)
-    print("Métricas calculadas exitosamente.")
+    df['engagement_likes'] = df['engagement_likes'].fillna(0)
+    df['engagement_comments'] = df['engagement_comments'].fillna(0)
+    
+    print(" -> Métricas de engagement calculadas.")
 
-    # --- PASO 3: Generación de Archivos de Salida Ordenados ---
-    print("Paso 3: Generando archivos de salida...")
+    # --- PASO 3: Creación del Resumen de Candidatos ---
+    print("Paso 3: Creando el resumen de candidatos...")
 
-    # a_resumen_candidatos.csv
-    summary = df.groupby('username').agg(
-        seguidores_actualizados=('seguidores_actualizados', 'max'),
-        total_publicaciones=('post_id', 'count'),
-        avg_engagement_video_likes=('engagement_video_likes', lambda x: x[x > 0].mean()),
-        avg_engagement_video_comments=('engagement_video_comments', lambda x: x[x > 0].mean()),
-        avg_engagement_imagen_likes=('engagement_imagen_likes', lambda x: x[x > 0].mean()),
-        avg_engagement_imagen_comments=('engagement_imagen_comments', lambda x: x[x > 0].mean()),
-        avg_engagement_carrusel_likes=('engagement_carrusel_likes', lambda x: x[x > 0].mean()),
-        avg_engagement_carrusel_comments=('engagement_carrusel_comments', lambda x: x[x > 0].mean())
-    ).reset_index().fillna(0)
-    summary.to_csv(os.path.join(output_folder, 'a_resumen_candidatos.csv'), index=False, float_format='%.6f')
-    print(f" -> Archivo 'a_resumen_candidatos.csv' generado.")
+    resumen_candidatos = df.groupby('username').agg(
+        seguidores_actualizados=('followers_count', 'first'),
+        total_publicaciones=('post_id', 'count')
+    ).reset_index()
+    resumen_candidatos['seguidores_actualizados'] = resumen_candidatos['seguidores_actualizados'].fillna(0)
 
-    # Función auxiliar para generar los Top 10 (MODIFICADA)
-    def generate_top10(media_type, metric, filename):
-        df_filtered = df[df['media_type'] == media_type]
-        top10 = df_filtered.groupby('username').apply(lambda x: x.nlargest(10, metric)).reset_index(drop=True)
+    avg_engagement = df.groupby(['username', 'media_type']).agg(
+        avg_likes=('engagement_likes', 'mean'),
+        avg_comments=('engagement_comments', 'mean')
+    ).reset_index()
 
-        # Lista de columnas actualizada con los campos que solicitaste
-        cols_to_keep = [
-            'username',
-            metric, # La métrica de engagement específica
-            'likes_count',
-            'comments_count',
-            'seguidores_actualizados',
-            'post_created_at_str',
-            'play_count',
-            'usertags',
-            'post_transcript',
-            'post_caption',
-            'post_url'
-        ]
+    media_type_map = {1: 'imagen', 2: 'video', 8: 'carrusel'}
+    
+    pivot_engagement = avg_engagement.pivot_table(
+        index='username',
+        columns='media_type',
+        values=['avg_likes', 'avg_comments']
+    ).reset_index()
 
-        # Asegurarse de que las columnas existan en el dataframe para evitar errores
-        existing_cols_to_keep = [col for col in cols_to_keep if col in top10.columns]
+    pivot_engagement.columns = [
+        f'{col[0]}_{media_type_map[col[1]]}' if col[1] in media_type_map else col[0] 
+        for col in pivot_engagement.columns
+    ]
+    
+    pivot_engagement = pivot_engagement.rename(columns={
+        'avg_likes_imagen': 'avg_engagement_imagen_likes',
+        'avg_comments_imagen': 'avg_engagement_imagen_comments',
+        'avg_likes_video': 'avg_engagement_video_likes',
+        'avg_comments_video': 'avg_engagement_video_comments',
+        'avg_likes_carrusel': 'avg_engagement_carrusel_likes',
+        'avg_comments_carrusel': 'avg_engagement_carrusel_comments',
+    })
+    
+    resumen_candidatos = pd.merge(resumen_candidatos, pivot_engagement, on='username', how='left')
+    resumen_candidatos.fillna(0, inplace=True)
+    
+    resumen_candidatos.to_csv(os.path.join(output_folder, 'a_resumen_candidatos.csv'), index=False, float_format='%.6f')
+    print(" -> Archivo 'a_resumen_candidatos.csv' generado correctamente.")
 
-        top10[existing_cols_to_keep].to_csv(os.path.join(output_folder, filename), index=False, float_format='%.6f')
-        print(f" -> Archivo '{filename}' generado.")
+    # --- PASO 4: Generación de Tops 10 y Archivos de Evolución (LÓGICA MODIFICADA) ---
+    print("Paso 4: Generando archivos de Top 10 por perfil y evolución...")
 
-    # Generar todos los Top 10
-    generate_top10(2, 'engagement_video_likes', 'b_top10_videos_likes.csv')
-    generate_top10(2, 'engagement_video_comments', 'c_top10_videos_comments.csv')
-    generate_top10(1, 'engagement_imagen_likes', 'd_top10_imagenes_likes.csv')
-    generate_top10(1, 'engagement_imagen_comments', 'e_top10_imagenes_comments.csv')
-    generate_top10(8, 'engagement_carrusel_likes', 'f_top10_carruseles_likes.csv')
-    generate_top10(8, 'engagement_carrusel_comments', 'g_top10_carruseles_comments.csv')
+    def generate_top10_per_user(media_type, metric, filename):
+        """
+        Filtra por tipo de medio, luego agrupa por usuario y para cada uno,
+        encuentra las 10 publicaciones principales según la métrica especificada.
+        """
+        # Filtra el DataFrame por el tipo de medio para eficiencia
+        media_df = df[df['media_type'] == media_type]
+        
+        # Ordena por usuario y luego por la métrica de forma descendente
+        # y agrupa por usuario para tomar los 10 primeros de cada grupo.
+        top_10_df = media_df.sort_values(by=['username', metric], ascending=[True, False]) \
+                            .groupby('username') \
+                            .head(10)
+        
+        top_10_df.to_csv(os.path.join(output_folder, filename), index=False, float_format='%.6f')
+        print(f" -> Archivo '{filename}' generado (Top 10 por perfil).")
 
-    # h_ y i_ datos de evolución
+    # Generar todos los Top 10 con la nueva lógica por perfil
+    generate_top10_per_user(2, 'engagement_likes', 'b_top10_videos_likes.csv')
+    generate_top10_per_user(2, 'engagement_comments', 'c_top10_videos_comments.csv')
+    generate_top10_per_user(1, 'engagement_likes', 'd_top10_imagenes_likes.csv')
+    generate_top10_per_user(1, 'engagement_comments', 'e_top10_imagenes_comments.csv')
+    generate_top10_per_user(8, 'engagement_likes', 'f_top10_carruseles_likes.csv')
+    generate_top10_per_user(8, 'engagement_comments', 'g_top10_carruseles_comments.csv')
+
+    # Generar datos de evolución (esta parte no necesitaba cambios)
     df['dia_publicacion'] = df['post_created_at_str'].dt.date
     likes_evolution = df.groupby(['dia_publicacion', 'username'])['likes_count'].sum().reset_index()
     comments_evolution = df.groupby(['dia_publicacion', 'username'])['comments_count'].sum().reset_index()
 
     likes_evolution.to_csv(os.path.join(output_folder, 'h_datos_evolucion_likes.csv'), index=False)
-    print(f" -> Archivo 'h_datos_evolucion_likes.csv' generado.")
+    print(" -> Archivo 'h_datos_evolucion_likes.csv' generado.")
     comments_evolution.to_csv(os.path.join(output_folder, 'i_datos_evolucion_comentarios.csv'), index=False)
-    print(f" -> Archivo 'i_datos_evolucion_comentarios.csv' generado.")
+    print(" -> Archivo 'i_datos_evolucion_comentarios.csv' generado.")
 
-    print("\n¡Análisis completado! Todos los archivos han sido guardados en la carpeta 'output'.")
+    print("\nAnálisis completado. Los archivos se han guardado en la carpeta 'output'.")
 
-
-# --- Ejecutar el análisis ---
-if __name__ == "__main__":
+# --- Ejecución del Análisis ---
+if __name__ == '__main__':
     analyze_instagram_data()
