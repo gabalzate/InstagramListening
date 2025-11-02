@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
@@ -21,7 +21,10 @@ TODAY = datetime.now()
 FOLDER_NAME = f"analisis_{TODAY.strftime('%Y%m%d')}"
 
 # Determinar el mes y año actual para el filtrado
-CURRENT_MONTH_YEAR = TODAY.strftime('%Y-%m')
+#CURRENT_MONTH_YEAR = TODAY.strftime('%Y-%m')
+
+# Determinar el mes y año de hace 5 días, caso de que no hicimos el análisis a tiempo
+CURRENT_MONTH_YEAR = (TODAY - timedelta(days=5)).strftime('%Y-%m')
 
 
 def setup_environment(input_file: str) -> pd.DataFrame or None:

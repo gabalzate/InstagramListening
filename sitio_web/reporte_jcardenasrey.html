@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Juan C. Cardenas</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0056b3; }
+        .button-link { display: inline-block; padding: 10px 20px; margin-top: 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px; }
+        .analysis-section { margin-top: 30px; }
+        .wordcloud { text-align: center; }
+        .wordcloud img { max-width: 100%; border: 1px solid #ddd; }
+        .profile-header { background-color: #e9ecef; padding: 15px; border-radius: 5px; text-align: center; margin-bottom: 30px; }
+        .video-cards { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .card { border: 1px solid #ddd; border-radius: 5px; padding: 15px; width: 30%; box-sizing: border-box; }
+        .card h3 { margin-top: 0; }
+        .card-metrics { font-size: 0.9em; color: #555; }
+        .collapsible-content { max-height: 150px; overflow: hidden; position: relative; transition: max-height 0.5s ease-out; border: 1px solid #eee; padding: 10px; border-radius: 5px;}
+        .collapsible-content.expanded { max-height: 2000px; }
+        .read-more-btn { background-color: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        /* Estilos para el texto renderizado desde Markdown */
+        .llm-output h1, .llm-output h2, .llm-output h3 { color: #333; }
+        .llm-output ul { padding-left: 20px; }
+        .llm-output strong { color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <h1>Análisis de Discurso: Juan C. Cardenas</h1>
+            <p><strong>Seguidores:</strong> N/A</p>
+        </div>
+        <a href="index.html" class="button-link">← Volver al Reporte General</a>
+
+        <div class="analysis-section">
+            <h2>Análisis del Discurso General</h2>
+            <div id="llm-general-content" class="collapsible-content">
+                <div class="llm-output"><p>Análisis del LLM (General) no encontrado.</p></div>
+            </div>
+            <button class="read-more-btn" onclick="toggleCollapse('llm-general-content', this)">Ver más</button>
+        </div>
+
+        <div class="analysis-section">
+            <h2>Análisis del Discurso Exitoso (Basado en Top Engagement)</h2>
+            <div id="llm-exitoso-content" class="collapsible-content">
+                <div class="llm-output"><p>Análisis del Discurso Exitoso (LLM) no encontrado.</p></div>
+            </div>
+            <button class="read-more-btn" onclick="toggleCollapse('llm-exitoso-content', this)">Ver más</button>
+        </div>
+
+        <div class="analysis-section">
+            <h2>Nube de Palabras del Discurso General</h2>
+            <div class="wordcloud">
+                <img src="../reportes_discurso/wordcloud_discurso_jcardenasrey.png" alt="Nube de palabras de Juan C. Cardenas">
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <h2>Top 3 Videos de Mayor Impacto</h2>
+            <div class="video-cards">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCollapse(elementId, button) {
+            const content = document.getElementById(elementId);
+            content.classList.toggle('expanded');
+            if (content.classList.contains('expanded')) {
+                button.textContent = 'Ver menos';
+            } else {
+                button.textContent = 'Ver más';
+            }
+        }
+    </script>
+</body>
+</html>
