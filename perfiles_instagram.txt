@@ -1,5 +1,4 @@
 delaespriella_style
-andresguerraho
 anibal.gaviria
 claudialopezcl
 danielpal
@@ -10,9 +9,7 @@ efraincepedasenador
 germanvargaslleras
 hectorolimpo
 ivancepedacastr
-jcardenasrey
 jdoviedoar
-juangzuluaga
 juanmanuelgalanpachon
 pinzonbueno
 luisgmurillou
@@ -27,4 +24,4 @@ roybarreras
 santiagobotero.jaramillo
 sergiofajardovalderrama
 vickydavilah
-vicmunro74
+juanfernandocristobustos
