@@ -11,11 +11,11 @@ NAME_MAP_FILE = "reemplazo_nombres_perfiles_visualizacion.json"
 OUTPUT_HTML_FILE = "mapa_de_red_final.html"
 
 # --- Parámetros de Visualización ---
-MIN_WEIGHT_THRESHOLD = 50.0
+MIN_WEIGHT_THRESHOLD = 35.0
 VISUAL_EDGE_MIN = 1
 VISUAL_EDGE_MAX = 9
-VISUAL_NODE_MIN = 10
-VISUAL_NODE_MAX = 50
+VISUAL_NODE_MIN = 20
+VISUAL_NODE_MAX = 40
 
 # --- SCRIPT PRINCIPAL ---
 print("🚀 Iniciando la optimización y normalización del mapa de red...")
